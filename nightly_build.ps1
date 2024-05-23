@@ -3,8 +3,6 @@ cd $thisPath
 
 set PATH=C:\Program Files\dotnet;%PATH%
 
-git pull https://github.com/Stability-AI/StableSwarmUI.git master:master
-
 rmdir /s /q .\src\bin\live_release_backup
 move .\src\bin\live_release .\src\bin\live_release_backup
 
