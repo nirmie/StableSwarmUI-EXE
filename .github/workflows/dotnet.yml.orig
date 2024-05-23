@@ -1,0 +1,48 @@
+# This workflow will build a .NET project
+# For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-net
+
+name: .NET
+
+on:
+  push:
+    branches: [ "master" ]
+  pull_request:
+    branches: [ "master" ]
+
+jobs:
+  build:
+
+    runs-on: windows-latest
+
+    steps:
+    - uses: actions/checkout@v4
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: 8.0.x
+    - name: Restore dependencies
+      run: dotnet restore
+    - name: Install dependencies
+      run: dotnet nuget add source https://api.nuget.org/v3/index.json --name "NuGet official package source"
+    - name: Publish
+<<<<<<< HEAD
+      run: dotnet publish -c Release -r win-x64 --self-contained true -o ./publish
+    - name: Copy files to project folder
+      run: cp -r ./publish/* .
+
+    - name: Commit changes
+      run: |
+        git config --local user.email "action@github.com"
+        git config --local user.name "GitHub Action"
+        git add .
+        git commit -m "Publish self-contained ASP.NET Core project"
+    
+    - name: Push changes
+      uses: ad-m/github-push-action@v0.6.0
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+=======
+      run: dotnet publish -c Release -r win-x64 --self-contained
+    - name: Test
+      run: dotnet test
+>>>>>>> parent of 77f99bf (Update dotnet.yml)
