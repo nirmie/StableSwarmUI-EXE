@@ -22,8 +22,6 @@ jobs:
         dotnet-version: 8.0.x
     - name: Restore dependencies
       run: dotnet restore
-    - name: Install dependencies
-      run: dotnet nuget add source https://api.nuget.org/v3/index.json --name "NuGet official package source"
     - name: Publish
       run: dotnet publish -c Release -r win-x64 --self-contained
     - name: Test
