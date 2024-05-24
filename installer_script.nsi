@@ -16,7 +16,7 @@ RequestExecutionLevel admin
 
 ; Pages
 !insertmacro MUI_PAGE_WELCOME
-!insertmacro MUI_PAGE_LICENSE "${NSISDIR}\Docs\Modern UI\LICENSE.txt"
+!insertmacro MUI_PAGE_LICENSE "LICENSE.txt"
 !insertmacro MUI_PAGE_COMPONENTS
 !insertmacro MUI_PAGE_DIRECTORY
 !insertmacro MUI_PAGE_INSTFILES
@@ -24,7 +24,7 @@ RequestExecutionLevel admin
 
 !insertmacro MUI_UNPAGE_WELCOME
 !insertmacro MUI_UNPAGE_CONFIRM
-!insertmacro MUI_UNPAGE_LICENSE "${NSISDIR}\Docs\Modern UI\LICENSE.txt"
+!insertmacro MUI_UNPAGE_LICENSE "LICENSE.txt"
 !insertmacro MUI_UNPAGE_COMPONENTS
 !insertmacro MUI_UNPAGE_DIRECTORY
 !insertmacro MUI_UNPAGE_INSTFILES
@@ -36,7 +36,7 @@ RequestExecutionLevel admin
 Section "MyProgram (required)"
     SetOutPath "$INSTDIR"
     ; Add files to be installed
-    File /r "C:\Users\nod\StableSwarmUI\*"
+    File /r "C:\StableSwarmUI\*"
 SectionEnd
 
 ; Create Start Menu shortcut
