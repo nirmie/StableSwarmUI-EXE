@@ -6,8 +6,8 @@
 # Compression method, '/SOLID lzma' takes least space
 # setCompressor /SOLID lzma
 
-!define MUI_ICON:"amd_DMT_icon.ico"
-!define MUI_UNICON:"amd_DMT_icon.ico"
+!define MUI_ICON "amd_DMT_icon.ico"
+!define MUI_UNICON "amd_DMT_icon.ico"
 !define UNINSTALLER "uninstaller.exe"
 !define REG_UNINSTALL "Software\Microsoft\Windows\CurrentVersion\Uninstall\StableSwarmUI"
 
