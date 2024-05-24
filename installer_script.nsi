@@ -1,25 +1,28 @@
-; NSIS script to create an installer. command:  makensis.exe /LAUNCH .\installer_script.nsi
+# NSIS script to create an installer. command:  makensis.exe /LAUNCH .\installer_script.nsi
 
-; Include Modern UI
+# Include Modern UI
 !include "MUI2.nsh"
 
+# Compression method, '/SOLID lzma' takes least space
+# setCompressor /SOLID lzma
 
-; Define variables
+!define MUI_ICON:"amd_DMT_icon.ico"
+!define MUI_UNICON:"amd_DMT_icon.ico"
+!define UNINSTALLER "uninstaller.exe"
+!define REG_UNINSTALL "Software\Microsoft\Windows\CurrentVersion\Uninstall\StableSwarmUI"
+
+# Define variables
 Name "StableSwarmUI"
 OutFile "StableSwarmUI-Installer.exe"
-;Var FilePath
+# Var FilePath
 
-;Section SetFilePath
-;StrCpy $FilePath "C:\Users\nirma\StableSwarmUI-EXE"
-;SectionEnd
-
-; Default installation directory
+# Default installation directory
 InstallDir "$PROFILE\StableSwarmUI"
 
-; Request application privileges for Windows Vista and later
+# Request application privileges for Windows Vista and later
 RequestExecutionLevel admin
 
-; Pages
+# Pages
 !insertmacro MUI_PAGE_WELCOME
 !insertmacro MUI_PAGE_LICENSE "LICENSE.txt"
 !insertmacro MUI_PAGE_COMPONENTS
@@ -29,45 +32,53 @@ RequestExecutionLevel admin
 
 !insertmacro MUI_UNPAGE_WELCOME
 !insertmacro MUI_UNPAGE_CONFIRM
-!insertmacro MUI_UNPAGE_LICENSE "LICENSE.txt"
-!insertmacro MUI_UNPAGE_COMPONENTS
-!insertmacro MUI_UNPAGE_DIRECTORY
 !insertmacro MUI_UNPAGE_INSTFILES
 !insertmacro MUI_UNPAGE_FINISH
 
-!insertmacro MUI_LANGUAGE "English" ; The first language is the default language
+!insertmacro MUI_LANGUAGE "English" # The first language is the default language
 
-; Sections
-Section "MyProgram (required)"
+# Sections
+Section "StableSwarmUI (required)"
     SetOutPath "$INSTDIR"
-    ; Add files to be installed
-    File /r /x *.bat /x *.sh /x *.ps1 /x StableSwarmUI-Installer.exe /x colab /x .github /x .git /x bin C:\Users\nirma\StableSwarmUI-EXE\*.*
+    # Add files to be installed
+    File /r /x *.bat /x *.sh /x *.ps1 /x StableSwarmUI-Installer.exe /x DOCKERFILE /x .dockerignore \
+    /x docker-compose.yml /x colab /x .github /x .git /x bin C:\Users\nod\StableSwarmUI-EXE\*.*
 
-    #SetOutPath "$TEMP"
-    ;Delete Unecessary Files
-    #Delete "C:\Users\nirma\StableSwarmUI-EXE\StableSwarmUI-Installer.exe"
-    #Delete "C:\Users\nirma\StableSwarmUI-EXE\src\bin"
-    #Delete "C:\Users\nirma\StableSwarmUI-EXE\*.bat"
-    #Delete "C:\Users\nirma\StableSwarmUI-EXE\*.sh"
+    # Register with Windows Installer (Control Panel Add/Remove Programs)
 
-    #SetOutPath "$INSTDIR"
-    #File /r "C:\Users\nirma\StableSwarmUI-EXE\*.*"
+    WriteRegStr HKLM64 "${REG_UNINSTALL}" "DisplayName" "StableSwarmUI"
+    # sets the uninstall string
+    WriteRegStr HKLM64 "${REG_UNINSTALL}" "UninstallString" "$\"$INSTDIR\${UNINSTALLER}$\""
+    WriteRegStr HKLM64 "${REG_UNINSTALL}" "InstallLocation" "$INSTDIR"
+    WriteRegStr HKLM64 "${REG_UNINSTALL}" "DisplayIcon" "$INSTDIR\amd_DMT_icon.ico"
+    # Name of the publisher in add or remove programs in control panel TODO: change to proper name
+    WriteRegStr HKLM64 "${REG_UNINSTALL}" "Publisher" "Nirmal Senthilkumar"
+    # Link to the github TODO: change to new github
+    WriteRegStr HKLM64 "${REG_UNINSTALL}" "HelpLink" "https://github.com/nirmie/StableSwarmUI-EXE"
+    # version
+    WriteRegStr HKLM64 "${REG_UNINSTALL}" "DisplayVersion" "1.0.0"
+
+    WriteUninstaller "$INSTDIR\${UNINSTALLER}"
 SectionEnd
 
-; Create Start Menu shortcut
+# Create Start Menu shortcut
 Section "Start Menu Shortcut"
     CreateDirectory "$SMPROGRAMS\StableSwarmUI"
     CreateShortCut "$SMPROGRAMS\StableSwarmUI\StableSwarmUI.lnk" "$INSTDIR\StableSwarmUI.exe" "" "" 0
 SectionEnd
 
-; Uninstaller
+# Uninstaller
 Section "Uninstall"
-    ; Remove installed files
-    Delete "$INSTDIR\StableSwarmUI.exe"
-    ; Remove Start Menu shortcut
+    # Delete the installed files
+    Delete "$INSTDIR\*.*"
+    # Remove uninstaller
+    Delete "$INSTDIR\${UNINSTALLER}"
+    # Remove Start Menu shortcut
     Delete "$SMPROGRAMS\StableSwarmUI\StableSwarmUI.lnk"
-    ; Remove installation directory
-    RMDir "$INSTDIR"
-    ; Remove Start Menu directory if it's empty
+    # Remove installation directory
+    RMDir /r "$INSTDIR\"
+    # Remove Start Menu directory if it's empty
     RMDir "$SMPROGRAMS\StableSwarmUI"
+    # Remove registry keys
+    DeleteRegKey HKLM64 "${REG_UNINSTALL}"
 SectionEnd

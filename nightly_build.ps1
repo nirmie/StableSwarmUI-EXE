@@ -35,7 +35,7 @@ if (!(Test-Path src\bin\live_release\StableSwarmUI.dll)) {
 $env:ASPNETCORE_ENVIRONMENT = "Production"
 $env:ASPNETCORE_URLS = "http://*:7801"
 
-makensis.exe installer_script.nsi
+makensis.exe installer_script.nsi 
 
 if ($LASTEXITCODE -ne 0) { 
     Read-Host -Prompt "Press Enter to continue..." 
