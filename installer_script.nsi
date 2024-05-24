@@ -1,12 +1,12 @@
-; NSIS script to create an installer
+; NSIS script to create an installer. command:  makensis.exe /LAUNCH .\installer_script.nsi
 
 ; Include Modern UI
 !include "MUI2.nsh"
 
 
 ; Define variables
-Name "StableSwarmUI-Installer"
-OutFile "MyProgramInstaller.exe"
+Name "StableSwarmUI"
+OutFile "StableSwarmUI-Installer.exe"
 
 ; Default installation directory
 InstallDir "$PROFILE\StableSwarmUI"
