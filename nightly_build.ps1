@@ -1,18 +1,3 @@
-$thisPath = Split-Path $MyInvocation.MyCommand.Path -Parent
-Set-Location $thisPath
-
-Set-Variable PATH=C:\Program Files\dotnet;%PATH%
-
-Remove-Item /s /q .\src\bin\live_release_backup -Recurse
-Move-Item .\src\bin\live_release .\src\bin\live_release_backup -Recurse
-
-for /f "delims=" %%i in ('git rev-parse HEAD') do set CUR_HEAD2=%%i
-echo !CUR_HEAD2!> src/bin/last_build
-
-Set-Variable ASPNETCORE_ENVIRONMENT="Production"
-Set-Variable ASPNETCORE_URLS="http://*:7801"
-
-
 # Ensure correct local path.
 Set-Location -Path $PSScriptRoot
 
@@ -50,7 +35,7 @@ if (!(Test-Path src\bin\live_release\StableSwarmUI.dll)) {
 $env:ASPNETCORE_ENVIRONMENT = "Production"
 $env:ASPNETCORE_URLS = "http://*:7801"
 
-makensis.exe StableSwarmUI.exe
+makensis.exe installer_script.nsi
 
 if ($LASTEXITCODE -ne 0) { 
     Read-Host -Prompt "Press Enter to continue..." 

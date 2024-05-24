@@ -7,6 +7,11 @@
 ; Define variables
 Name "StableSwarmUI"
 OutFile "StableSwarmUI-Installer.exe"
+;Var FilePath
+
+;Section SetFilePath
+;StrCpy $FilePath "C:\Users\nirma\StableSwarmUI-EXE"
+;SectionEnd
 
 ; Default installation directory
 InstallDir "$PROFILE\StableSwarmUI"
@@ -36,7 +41,17 @@ RequestExecutionLevel admin
 Section "MyProgram (required)"
     SetOutPath "$INSTDIR"
     ; Add files to be installed
-    File /r "C:\StableSwarmUI\*"
+    File /r /x *.bat /x *.sh /x *.ps1 /x StableSwarmUI-Installer.exe /x colab /x .github /x .git /x bin C:\Users\nirma\StableSwarmUI-EXE\*.*
+
+    #SetOutPath "$TEMP"
+    ;Delete Unecessary Files
+    #Delete "C:\Users\nirma\StableSwarmUI-EXE\StableSwarmUI-Installer.exe"
+    #Delete "C:\Users\nirma\StableSwarmUI-EXE\src\bin"
+    #Delete "C:\Users\nirma\StableSwarmUI-EXE\*.bat"
+    #Delete "C:\Users\nirma\StableSwarmUI-EXE\*.sh"
+
+    #SetOutPath "$INSTDIR"
+    #File /r "C:\Users\nirma\StableSwarmUI-EXE\*.*"
 SectionEnd
 
 ; Create Start Menu shortcut
