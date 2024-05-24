@@ -1,0 +1,17 @@
+name: Run Nightly Build Script
+
+on:
+  schedule:
+    - cron: '0 0 * * *'  # This runs the workflow at midnight UTC every day
+
+jobs:
+  run-powershell:
+    runs-on: windows-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    - name: Run PowerShell script
+      shell: pwsh
+      run: ./nightly_build.ps1
