@@ -10,13 +10,21 @@ if (!(Test-Path .git)) {
     Write-Host "" 
 } else {
     $CUR_HEAD = git rev-parse HEAD
-    $BUILT_HEAD = Get-Content src/bin/last_build
+    if (!(Test-Path src\bin\last_build)) {
+        $BUILT_HEAD = NULL
+    } else {
+        $BUILT_HEAD = Get-Content src\bin\last_build
+    }
     if ($CUR_HEAD -ne $BUILT_HEAD) {
         Write-Host ""
         Write-Host "WARNING: You did a git pull without building. Will now build for you..."
         Write-Host ""
-        Remove-Item -Path .\src\bin\live_release_backup -Recurse -Force
-        Move-Item -Path .\src\bin\live_release -Destination .\src\bin\live_release_backup
+        if (Test-Path .\src\bin\live_release_backup) {
+            Remove-Item -Path .\src\bin\live_release_backup -Recurse -Force
+        }
+        if (Test-Path .\src\bin\live_release_backup) {
+            Move-Item -Path .\src\bin\live_release -Destination .\src\bin\live_release_backup
+        }
     }
 }
 
