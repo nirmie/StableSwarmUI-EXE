@@ -1,6 +1,7 @@
 name: Run Nightly Build Script
 
 on:
+  workflow_dispatch:
   schedule:
     - cron: '0 0 * * *'  # This runs the workflow at midnight UTC every day
 
