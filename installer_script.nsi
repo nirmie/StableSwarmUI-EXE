@@ -6,8 +6,8 @@
 # Compression method, '/SOLID lzma' takes least space
 # setCompressor /SOLID lzma
 
-!define MUI_ICON "amd_DMT_icon.ico"
-!define MUI_UNICON "amd_DMT_icon.ico"
+!define MUI_ICON "src\wwwroot\favicon.ico"
+!define MUI_UNICON "src\wwwroot\favicon.ico"
 !define UNINSTALLER "uninstaller.exe"
 !define REG_UNINSTALL "Software\Microsoft\Windows\CurrentVersion\Uninstall\StableSwarmUI"
 
@@ -50,7 +50,7 @@ Section "StableSwarmUI (required)"
     # sets the uninstall string
     WriteRegStr HKLM64 "${REG_UNINSTALL}" "UninstallString" "$\"$INSTDIR\${UNINSTALLER}$\""
     WriteRegStr HKLM64 "${REG_UNINSTALL}" "InstallLocation" "$INSTDIR"
-    WriteRegStr HKLM64 "${REG_UNINSTALL}" "DisplayIcon" "$INSTDIR\amd_DMT_icon.ico"
+    WriteRegStr HKLM64 "${REG_UNINSTALL}" "DisplayIcon" "$INSTDIR\src\wwwroot\favicon.ico"
     # Name of the publisher in add or remove programs in control panel TODO: change to proper name
     WriteRegStr HKLM64 "${REG_UNINSTALL}" "Publisher" "Nirmal Senthilkumar"
     # Link to the github TODO: change to new github
