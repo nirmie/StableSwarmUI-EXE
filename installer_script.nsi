@@ -42,7 +42,7 @@ Section "StableSwarmUI (required)"
     SetOutPath "$INSTDIR"
     # Add files to be installed
     File /r /x *.bat /x *.sh /x *.ps1 /x StableSwarmUI-Installer.exe /x DOCKERFILE /x .dockerignore \
-    /x docker-compose.yml /x colab /x .github /x .git /x bin C:\Users\nod\StableSwarmUI-EXE\*.*
+    /x docker-compose.yml /x colab /x .github /x .git /x bin ${__FILEDIR__}\*.*
 
     # Register with Windows Installer (Control Panel Add/Remove Programs)
 
