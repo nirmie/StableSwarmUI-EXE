@@ -7,7 +7,18 @@ cd $SCRIPT_DIR
 # Add dotnet non-admin-install to path
 export PATH="$SCRIPT_DIR/.dotnet:~/.dotnet:$PATH"
 
-if [ -d .git ]; then
+# Server settings option
+if [ -f ./src/bin/always_pull ]; then
+    echo "Pulling latest changes..."
+    git pull
+fi
+
+if [ -f ./src/bin/must_rebuild ]; then
+    echo "Rebuilding..."
+    rm -rf ./src/bin/live_release_backup
+    mv ./src/bin/live_release ./src/bin/live_release_backup
+    rm ./src/bin/must_rebuild
+elif [ -d .git ]; then
     cur_head=`git rev-parse HEAD`
     built_head=`cat src/bin/last_build`
     if [ "$cur_head" != "$built_head" ]; then
@@ -31,3 +42,8 @@ export ASPNETCORE_ENVIRONMENT="Production"
 export ASPNETCORE_URLS="http://*:7801"
 # Actual runner.
 dotnet src/bin/live_release/StableSwarmUI.dll $@
+
+# Exit code 42 means restart, anything else = don't.
+if [ $? == 42 ]; then
+    . ./launch-linux.sh $@
+fi

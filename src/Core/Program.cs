@@ -276,13 +276,14 @@ public class Program
     private volatile static bool HasShutdown = false;
 
     /// <summary>Main shutdown handler. Tells everything to stop.</summary>
-    public static void Shutdown()
+    public static void Shutdown(int code = 0)
     {
         if (HasShutdown)
         {
             return;
         }
         HasShutdown = true;
+        Environment.ExitCode = code;
         Logs.Info("Shutting down...");
         GlobalCancelSource.Cancel();
         Logs.Verbose("Shutdown webserver...");
@@ -416,6 +417,15 @@ public class Program
         try
         {
             FDSUtility.SaveToFile(ServerSettings.Save(true), SettingsFilePath);
+            bool hasAlwaysPullFile = File.Exists("./src/bin/always_pull");
+            if (ServerSettings.AutoPullDevUpdates && !hasAlwaysPullFile)
+            {
+                File.WriteAllText("./src/bin/always_pull", "true");
+            }
+            else if (!ServerSettings.AutoPullDevUpdates && hasAlwaysPullFile)
+            {
+                File.Delete("./src/bin/always_pull");
+            }
         }
         catch (Exception ex)
         {

@@ -353,11 +353,38 @@ function importPresetsButton() {
 }
 
 function importPresetsToData(text) {
+    function addValueToPrompt(text) {
+        if (text.includes('{value}')) {
+            return text;
+        }
+        else if (text.includes('{prompt}')) {
+            return text.replace('{prompt}', '{value}');
+        }
+        return '{value} ' + text;
+    }
     if (text.trim() == '') {
         return null;
     }
     if (text.startsWith('{')) {
         return JSON.parse(text);
+    }
+    if (text.startsWith('[')) {
+        let parsed = JSON.parse(`{ "list": ${text} }`);
+        let data = {};
+        for (let item of parsed.list) {
+            if (item.name) {
+                data[item.name] = {
+                    title: item.name,
+                    description: `Imported prompt preset '${item.name}'`,
+                    preview_image: '',
+                    param_map: {
+                        prompt: addValueToPrompt(item.prompt || ''),
+                        negativeprompt: addValueToPrompt(item.negative_prompt || item.negativeprompt || '')
+                    }
+                };
+            }
+        }
+        return data;
     }
     if (text.startsWith('name,prompt,negative_prompt,')) {
         data = {};
@@ -377,12 +404,8 @@ function importPresetsToData(text) {
             if (!prompt && !negativeprompt) {
                 continue;
             }
-            if (!prompt.includes('{value}')) {
-                prompt = '{value} ' + prompt;
-            }
-            if (!negativeprompt.includes('{value}')) {
-                negativeprompt = '{value} ' + negativeprompt;
-            }
+            prompt = addValueToPrompt(prompt || '');
+            negativeprompt = addValueToPrompt(negativeprompt || '');
             data[parts[0].toLowerCase()] = {
                 title: name,
                 description: `Imported prompt preset '${name}'`,
@@ -415,14 +438,8 @@ function importPresetsToData(text) {
             if (!prompt && !negativeprompt) {
                 continue;
             }
-            prompt = prompt || '';
-            negativeprompt = negativeprompt || '';
-            if (!prompt.includes('{value}')) {
-                prompt = '{value} ' + prompt;
-            }
-            if (!negativeprompt.includes('{value}')) {
-                negativeprompt = '{value} ' + negativeprompt;
-            }
+            prompt = addValueToPrompt(prompt || '');
+            negativeprompt = addValueToPrompt(negativeprompt || '');
             result[key] = {
                 title: key,
                 description: `Imported prompt preset '${key}'`,
