@@ -11,7 +11,7 @@ if (!(Test-Path .git)) {
 } else {
     $CUR_HEAD = git rev-parse HEAD
     if (!(Test-Path src\bin\last_build)) {
-        $BUILT_HEAD = NULL
+        $BUILT_HEAD = 0
     } else {
         $BUILT_HEAD = Get-Content src\bin\last_build
     }
