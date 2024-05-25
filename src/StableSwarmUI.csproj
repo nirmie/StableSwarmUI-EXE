@@ -8,7 +8,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Content Include="amd_DMT_icon.ico" />
+    <Content Include="wwwroot\favicon.ico" />
   </ItemGroup>
 
   <ItemGroup>
