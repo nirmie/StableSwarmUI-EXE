@@ -36,7 +36,9 @@ if (!(Test-Path src\bin\live_release\StableSwarmUI.dll)) {
     dotnet publish src/StableSwarmUI.csproj -c Release -r win-x64 -o .\ -p:PublishSingleFile=true --self-contained true
 
     $CUR_HEAD2 = git rev-parse HEAD
-    $CUR_HEAD2 | Out-File -FilePath src/bin/last_build
+    if (Test-Path src/bin/last_build) {
+        $CUR_HEAD2 | Out-File -FilePath src/bin/last_build
+    }
 }
 
 # Default env configuration, gets overwritten by the C# code's settings handler
